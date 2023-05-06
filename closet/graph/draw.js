@@ -97,7 +97,7 @@ export const drawGraphCanvas = function(data){
     const step = (maxTemp - minTemp) / (numberOfTempsOnLegend - 1);
     return Math.round(minTemp + (i * step));
   });
-  for (const x of [4, graphSize.w - tempsWidth]) {
+  for (const x of [4, graphSize.w - (tempsWidth + 5)]) {
     for (const [i, temp] of legendTemps.entries()) {
       const yStep = (graphSize.h - 32) / (numberOfTempsOnLegend - 1);
       const y = graphSize.h - (yStep * i);
@@ -107,10 +107,10 @@ export const drawGraphCanvas = function(data){
 
       const lineY = y - ((i / (numberOfTempsOnLegend - 1)) * 20);
       ctx.beginPath();
-      ctx.strokeStyle = `#ffffff`;
+      ctx.strokeStyle = `rgba(255,255,255,0.4)`;
       ctx.moveTo(tempsWidth + 20, lineY);
       ctx.lineTo(graphSize.w - (tempsWidth + 20), lineY);
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 0.5;
       ctx.stroke();
     }
   }

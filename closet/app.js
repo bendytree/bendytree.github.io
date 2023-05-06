@@ -66,7 +66,7 @@ export const App = {
       if (!dataRef.value) return;
       const canvas = drawGraphCanvas(dataRef.value);
       // God knows why this is necessary
-      setInterval(async () => {
+      setTimeout(async () => {
         $('.graph').html(canvas);
       }, 500);
     };
