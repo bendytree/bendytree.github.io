@@ -1,0 +1,85 @@
+
+html, body {
+  padding: 0;
+  margin: 0;
+  background-color: #222;
+}
+
+.screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 1024px;
+  height: 768px;
+  background-color: #000;
+  color: #fff;
+  font-family: "SF Pro", "SF Pro Display", Impact, sans-serif;
+
+  .top-row {
+    display: flex;
+    flex-direction: row;
+    height: 154px;
+    align-items: stretch;
+    justify-content: stretch;
+
+    > .cell {
+      flex: 1;
+      text-align: center;
+
+      > .value {
+        height: 80px;
+        line-height: 80px;
+        font-size: 108px;
+        font-weight: bold;
+
+        > .super {
+          position: relative;
+          top: -1em;
+          font-size: 40%;
+        }
+      }
+      > .label {
+        line-height: 74px;
+        font-size: 48px;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .graph {
+    height: 489px;
+    // border: solid 1px #666;
+  }
+
+  .bottom-row {
+    display: flex;
+    flex-direction: row;
+    height: 125px;
+    align-items: center;
+    justify-content: stretch;
+    position: relative;
+    top: 8px;
+
+    > .cell {
+      font-size: 108px;
+      font-weight: bold;
+
+      > .super {
+        vertical-align: text-top;
+        font-size: 25%;
+        position: relative;
+        top: 0.8em;
+      }
+    }
+  }
+}
+
+.auto-size-text {
+  overflow: hidden;
+
+  > div {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
