@@ -11,6 +11,10 @@
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
 <script type="module">
+  window.onerror = function(message, url, line, col, error) {
+    alert("Error: " + message + "\nURL: " + url + "\nLine: " + line + "\nColumn: " + col + "\nError object: " + error);
+  };
+
   import App from './app.js';
   Vue.createApp(App).mount('#app');
 </script>
