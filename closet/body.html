@@ -12,19 +12,21 @@
 
 <div id="app"></div>
 
-<link rel="stylesheet/less" type="text/css" href="/closet/closet.less" />
-<script src="https://www.unpkg.com/less@2.7.1/dist/less.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@vue/composition-api@1.7.1/dist/vue-composition-api.js"></script>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-<!-- v3 -->
-
-<script type="module">
+<script>
   window.onerror = function(message, url, line, col, error) {
     alert("Error: " + message + "\nURL: " + url + "\nLine: " + line + "\nColumn: " + col + "\nError object: " + error);
   };
+</script>
 
+<link rel="stylesheet/less" type="text/css" href="/closet/closet.less" />
+<script src="https://www.unpkg.com/less@2.7.1/dist/less.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@vue/composition-api@1.7.1/dist/vue-composition-api.js"></script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" crossorigin="anonymous"></script>
+<!-- v3 -->
+
+<script type="module">
   import App from './app.js';
   //Vue.createApp(App).mount('#app');
   new Vue({
