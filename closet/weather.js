@@ -2,13 +2,13 @@
 import sampleWeather from './sample-weather.js';
 
 class WeatherCache {
-  reports = [ /* { time: 2342432443, expires: 27364328646, report: {...} } */ ];
-  key = 'weather-cache';
   constructor() {
+    this.reports = [  ]; /* { time: 2342432443, expires: 27364328646, report: {...} } */
+    this.key = 'weather-cache';
     try {
       const json = localStorage.getItem(this.key);
       const c = JSON.parse(json);
-      if (c?.reports?.length) {
+      if (c && c.reports && c.reports.length) {
         this.reports = c.reports;
       }
     }catch(e){}
@@ -17,7 +17,7 @@ class WeatherCache {
   }
   getReport(time){
     this.cleanup();
-    const r = this.reports.find(r => r.time === time)?.report;
+    const r = (this.reports.find(r => r.time === time) || {}).report;
     return r;
   }
   addReport(report, time, expires) {

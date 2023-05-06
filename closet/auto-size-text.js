@@ -1,7 +1,7 @@
 
 const {ref, onMounted, nextTick} = window.VueCompositionAPI;
 
-export default {
+export const AutoSizeText = {
   props: {
     text: {
       type: String,

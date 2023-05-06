@@ -1,11 +1,11 @@
 
-import AutoSizeText from "./auto-size-text.js";
+import { AutoSizeText } from "./auto-size-text.js";
+
 import { drawGraphCanvas } from './graph/draw.js'
 import {getWeather} from "./weather.js";
-
 const {onMounted, ref} = window.VueCompositionAPI;
 
-export default {
+export const App = {
   components: {AutoSizeText},
   template: `
     <div class="screen">
@@ -27,10 +27,10 @@ export default {
           <div class="label">RAIN</div>
         </div>
       </div>
-  
+
       <div class="graph">
       </div>
-  
+
       <div class="bottom-row" v-if="data">
         <div class="cell">
           {{ time }}<span class="super">{{ ampm }}</span>
@@ -78,7 +78,7 @@ export default {
       time,
       ampm,
     };
-  }
+   }
 }
 
 const hours = [
@@ -113,17 +113,17 @@ const weatherToData = (weather) => {
 //     rain: _.random(0, 100),
 //   })),
 // };
-  for (const h of weather.today?.hourly?.data || []) {
+  for (const h of weather.today.hourly.data || []) {
     h.hour = new Date(h.time*1000).getHours();
   }
-  for (const h of weather.yesterday?.hourly?.data || []) {
+  for (const h of weather.yesterday.hourly.data || []) {
     h.hour = new Date(h.time*1000).getHours();
   }
-  const todayAvg = Math.random(_.chain(weather.today.hourly?.data || [])
+  const todayAvg = Math.random(_.chain(weather.today.hourly.data || [])
     .map(hour => hour.hour >= 10 && hour.hour <= 19)
     .meanBy(h => h.apparentTemperature)
     .value());
-  const yesterdayAvg = Math.random(_.chain(weather.yesterday.hourly?.data || [])
+  const yesterdayAvg = Math.random(_.chain(weather.yesterday.hourly.data || [])
     .map(hour => hour.hour >= 10 && hour.hour <= 19)
     .meanBy(h => h.apparentTemperature)
     .value());
@@ -132,21 +132,26 @@ const weatherToData = (weather) => {
   if (Math.abs(todayAvg - yesterdayAvg) <= 4) {
     title = `The same as yesterday.`;
   }
+
+  const getr = (cb) => {
+    try { return cb(); }catch (e){ return null;}
+  };
+
   return {
-    now: Math.round(weather.currently?.currently?.apparentTemperature),
-    high: _.chain(weather.today.hourly?.data || [])
+    now: getr(() => Math.round(weather.currently.currently.apparentTemperature)),
+    high: _.chain(getr(() => weather.today.hourly.data) || [])
       .map(h => Math.round(h.apparentTemperature))
       .max()
       .value(),
-    low: _.chain(weather.today.hourly?.data || [])
+    low: _.chain(getr(() => weather.today.hourly.data) || [])
       .map(h => Math.round(h.apparentTemperature))
       .min()
       .value(),
-    rain: _.chain(weather.today.hourly?.data || [])
+    rain: _.chain(getr(() => weather.today.hourly.data) || [])
       .map(h => Math.round(h.precipProbability*100))
       .max()
       .value(),
-    wind: _.chain(weather.today.hourly?.data || [])
+    wind: _.chain(getr(() => weather.today.hourly.data) || [])
       .map(h => Math.round(h.windSpeed))
       .max()
       .value(),
@@ -155,9 +160,9 @@ const weatherToData = (weather) => {
       const hourOfDay = i + 6;
       return {
         hour: hourOfDay,
-        temp: Math.round(weather.today.hourly?.data?.find(h => h.hour === hourOfDay)?.apparentTemperature),
-        prevTemp: Math.round(weather.yesterday.hourly?.data?.find(h => h.hour === hourOfDay)?.apparentTemperature),
-        rain: Math.ceil(weather.today.hourly?.data?.find(h => h.hour === hourOfDay)?.precipProbability * 100),
+        temp: getr(() => Math.round(weather.today.hourly.data.find(h => h.hour === hourOfDay).apparentTemperature)),
+        prevTemp: getr(() => Math.round(weather.yesterday.hourly.data.find(h => h.hour === hourOfDay).apparentTemperature)),
+        rain: getr(() => Math.ceil(weather.today.hourly.data.find(h => h.hour === hourOfDay).precipProbability * 100)),
       }
     }),
   };

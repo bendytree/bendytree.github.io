@@ -25,12 +25,12 @@ export const drawGraphCanvas = function(data){
   var hoursCount = data.hours.length;
   var labelWriters = [];
   var gap = 10;
-  var tempsWidth = 50;
+  var tempsWidth = 40;
   var hourWidth = (graphSize.w - tempsWidth * 2 - ((hoursCount+1) * gap)) / hoursCount;
 
   const hourToX = (hour, perc) => {
     const firstHour = data.hours[0].hour;
-    const idx = (hour?.hour || hour) - firstHour;
+    const idx = ((hour && hour.hour) || hour) - firstHour;
     //const idx = data.hours.indexOf(hour);
     const left = (idx + 1) * gap + hourWidth * idx;
     return left + (perc * hourWidth) + tempsWidth;
@@ -39,7 +39,7 @@ export const drawGraphCanvas = function(data){
   data.hours.map((hour, i) => {
     labelWriters.push(function(){
       var text = String((hour.hour % 12) || 12);
-      drawText(ctx, text, hourToX(hour, 0.5), graphSize.h + 40, "rgba(255,255,255,0.8)", 38);
+      drawText(ctx, text, hourToX(hour, 0.5), graphSize.h + 40, "rgba(255,255,255,1)", 32);
     });
   });
 
@@ -54,7 +54,7 @@ export const drawGraphCanvas = function(data){
   }));
   if (hasRain) {
     drawCurve(ctx, rainPoints, 0.5);
-    ctx.fillStyle = `#00ccff`;
+    ctx.fillStyle = `#00ddff`;
     ctx.lineTo(graphSize.w, graphSize.h);
     ctx.lineTo(0, graphSize.h);
     ctx.closePath();
@@ -101,8 +101,8 @@ export const drawGraphCanvas = function(data){
     for (const [i, temp] of legendTemps.entries()) {
       const yStep = (graphSize.h - 32) / (numberOfTempsOnLegend - 1);
       const y = graphSize.h - (yStep * i);
-      ctx.fillStyle = `rgba(255,255,255,0.8)`;
-      ctx.font = "32px sans-serif";
+      ctx.fillStyle = `rgba(255,255,255,1)`;
+      ctx.font = "28px sans-serif";
       ctx.fillText(`${temp}°`, x, y);
 
       const lineY = y - ((i / (numberOfTempsOnLegend - 1)) * 20);
@@ -117,7 +117,7 @@ export const drawGraphCanvas = function(data){
 
   //yesterday line
   ctx.lineWidth = 2;
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.6)";
   drawCurve(ctx, getCurvePoints(hour => hour.prevTemp), 0.5);
   ctx.stroke();
 
