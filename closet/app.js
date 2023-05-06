@@ -3,49 +3,48 @@ import AutoSizeText from "./auto-size-text.js";
 import { drawGraphCanvas } from './graph/draw.js'
 import {getWeather} from "./weather.js";
 
-const {onMounted, ref} = Vue;
+const {onMounted, ref} = window.VueCompositionAPI;
 
 export default {
   components: {AutoSizeText},
   template: `
     <div class="screen">
-    <div class="top-row" v-if="data">
-      <div class="cell">
-        <div class="value">{{ data.now }}°</div>
-        <div class="label">NOW</div>
+      <div class="top-row" v-if="data">
+        <div class="cell">
+          <div class="value">{{ data.now }}°</div>
+          <div class="label">NOW</div>
+        </div>
+        <div class="cell">
+          <div class="value">{{ data.high }}°</div>
+          <div class="label">HIGH</div>
+        </div>
+        <div class="cell">
+          <div class="value">{{ data.low }}°</div>
+          <div class="label">LOW</div>
+        </div>
+        <div class="cell">
+          <div class="value">{{ data.rain }}<span class="super">%</span></div>
+          <div class="label">RAIN</div>
+        </div>
       </div>
-      <div class="cell">
-        <div class="value">{{ data.high }}°</div>
-        <div class="label">HIGH</div>
+  
+      <div class="graph">
       </div>
-      <div class="cell">
-        <div class="value">{{ data.low }}°</div>
-        <div class="label">LOW</div>
+  
+      <div class="bottom-row" v-if="data">
+        <div class="cell">
+          {{ time }}<span class="super">{{ ampm }}</span>
+        </div>
+        <div class="cell" style="flex:1 1 0; min-width: 0; margin: 0 20px;">
+          <auto-size-text :text="data.title" :key="time + '-' + data.title"/>
+        </div>
+        <div class="cell">
+          {{ data.wind }}<span class="super">MPH</span>
+        </div>
       </div>
-      <div class="cell">
-        <div class="value">{{ data.rain }}<span class="super">%</span></div>
-        <div class="label">RAIN</div>
-      </div>
-    </div>
-
-    <div class="graph" ref="graphRef">
-    </div>
-
-    <div class="bottom-row" v-if="data">
-      <div class="cell">
-        {{ time }}<span class="super">{{ ampm }}</span>
-      </div>
-      <div class="cell" style="flex:1 1 0; min-width: 0; margin: 0 20px;">
-        <auto-size-text :text="data.title" :key="time + '-' + data.title"/>
-      </div>
-      <div class="cell">
-        {{ data.wind }}<span class="super">MPH</span>
-      </div>
-    </div>
     </div>
   `,
   setup () {
-    const graphRef = ref(null);
     const time = ref();
     const ampm = ref();
     const dataRef = ref(null);
@@ -64,12 +63,12 @@ export default {
       scheduleNextDraw(reload);
       const weather = await getWeather();
       dataRef.value = weatherToData(weather);
-      if (!graphRef.value || !dataRef.value) return;
+      if (!dataRef.value) return;
       const canvas = drawGraphCanvas(dataRef.value);
-      while (graphRef.value.firstChild) {
-        graphRef.value.removeChild(graphRef.value.lastChild);
-      }
-      graphRef.value.appendChild(canvas);
+      // God knows why this is necessary
+      setInterval(async () => {
+        $('.graph').html(canvas);
+      }, 500);
     };
 
     onMounted(reload);
@@ -78,8 +77,7 @@ export default {
       data: dataRef,
       time,
       ampm,
-      graphRef,
-    }
+    };
   }
 }
 

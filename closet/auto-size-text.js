@@ -1,5 +1,5 @@
 
-const {ref, onMounted, nextTick} = Vue;
+const {ref, onMounted, nextTick} = window.VueCompositionAPI;
 
 export default {
   props: {

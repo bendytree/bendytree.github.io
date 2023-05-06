@@ -62,7 +62,7 @@ const getReport = async (date, excludes, expires) => {
 };
 
 export const getWeather = async () => {
-  //return sampleWeather;
+  return sampleWeather;
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const yesterday = new Date(today.getTime() - (24 * 60 * 60 * 1000));
